@@ -1,17 +1,22 @@
 
-const Carrito = ({productoEnCarrito, eliminarDelCarrito}) => {
-    return (
+import { useContext } from "react";
+import { CarritoContext } from "../context/CarritoContext.jsx";
+
+const Carrito = () => {
+  const { eliminarProducto, carrito } = useContext(CarritoContext);
+
+  return (
 <div className="max-w-3xl mx-auto mt-10 bg-white shadow-lg rounded-2xl p-6">
   <h2 className="text-2xl font-bold text-gray-800 mb-6 border-b pb-2">
     Carrito de Compras 
   </h2>
 
-  {productoEnCarrito.length === 0 ? (
+  {carrito.length === 0 ? (
     <p className="text-gray-500 text-center">Tu carrito está vacío</p>
   ) : (
-    productoEnCarrito.map((producto, index) => (
+    carrito.map((producto, index) => (
       <div
-        key={producto.id || index}
+        key={index}
         className="flex items-center justify-between border-b border-gray-200 py-4 last:border-0"
       >
         {/* Imagen + Detalles */}
@@ -30,7 +35,7 @@ const Carrito = ({productoEnCarrito, eliminarDelCarrito}) => {
 
         {/* Botón eliminar */}
         <button
-          onClick={() => eliminarDelCarrito(index)}
+          onClick={() => eliminarProducto(index)}
           className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition font-medium"
         >
           Eliminar

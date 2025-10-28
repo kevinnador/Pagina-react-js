@@ -1,10 +1,14 @@
+import { useContext } from "react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { CarritoContext } from "../context/CarritoContext";
 
-const Productos = ({agregarAlCarrito}) => {
+const Productos = () => {
   const [producto, setProducto] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
+
+  const { agregarAlCarrito } = useContext(CarritoContext);
 
   useEffect(() => {
     fetch("https://fakestoreapi.com/products")

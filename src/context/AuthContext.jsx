@@ -1,0 +1,27 @@
+import { createContext, useState } from 'react';
+import { useContext } from 'react';
+const AuthContext = createContext();
+
+export const AuthProvider = ({ children }) => {
+    const [usuario, setUsuario] = useState(null);
+
+    const login = (nombreUsuario) => {
+        const token = `fake-token-${nombreUsuario}`;
+        localStorage.setItem('authToken', token);
+        setUsuario(nombreUsuario);
+    };
+
+    const logout = () => {
+        localStorage.removeItem('authToken');
+        setUsuario(null);
+    };
+
+    return (
+        <AuthContext.Provider value={{ usuario, login, logout }}>
+            {children}
+        </AuthContext.Provider>
+    );
+};
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const useAuthContext = () => useContext(AuthContext);
