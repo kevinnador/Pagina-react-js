@@ -1,5 +1,3 @@
-
-
 import Productos from "../components/Productos";
 
 const Inicio = () => {
