@@ -8,7 +8,7 @@ const Login = () => {
     const [password, setPassword] = useState("");
     
     const navigate = useNavigate();
-    const { login } = useAuthContext();
+    const { login} = useAuthContext();
         const manejarLogin = (e) => {
             e.preventDefault();
             if (usuario == "kevin" && password == "1234") {

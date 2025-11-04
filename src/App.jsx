@@ -10,6 +10,7 @@ import { Routes, Route} from 'react-router-dom'
 import RutaProtegida from './components/Protected/RutaProtegida'
 import Login from './components/Protected/Login'
 import Carrito from './components/Carrito'
+import Admin from './components/Protected/Admin'
 
 function App() {
 
@@ -20,6 +21,10 @@ function App() {
       <Main />
       <Routes>
         <Route path="/Inicio" element={<Inicio /> } />
+        <Route path='/Admin' element={
+          <RutaProtegida>
+            <Admin />
+          </RutaProtegida>} />
         <Route path='/carrito' element={
           <RutaProtegida>
             <Carrito />
