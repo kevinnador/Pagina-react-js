@@ -11,7 +11,7 @@ const Productos = () => {
   const { agregarAlCarrito } = useContext(CarritoContext);
 
   useEffect(() => {
-    fetch("https://fakestoreapi.com/products")
+    fetch("https://690bf8e96ad3beba00f6bbf1.mockapi.io/Productos")
       .then((response) => response.json())
       .then((data) => {
         setProducto(data);
@@ -39,38 +39,38 @@ return (
   </h2>
 
   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-    {producto.map((prod) => (
+    {producto.map((producto) => (
       <div
-        key={prod.id}
+        key={producto.id}
         className="border border-gray-200 rounded-2xl shadow-md bg-white overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-transform duration-300"
       >
         <div className="bg-gray-50 flex justify-center items-center h-56">
           <img
-            src={prod.image}
-            alt={prod.title}
+            src={producto.imagen}
+            alt={producto.nombre}
             className="max-h-52 object-contain p-4"
           />
         </div>
 
         <div className="p-5 flex flex-col justify-between">
           <h3 className="text-lg font-semibold text-gray-800 mb-2 line-clamp-2">
-            {prod.title}
+            {producto.nombre}
           </h3>
 
           <p className="text-lg font-semibold text-emerald-700 mb-4">
-            ${prod.price}
+            ${producto.precio}
           </p>
 
           <div className="flex items-center gap-2 mt-auto">
             <Link
-              to={`/productos/${prod.id}`}
+              to={`/productos/${producto.id}`}
               className=""
             >
               Detalle
             </Link>
 
             <button
-              onClick={() => agregarAlCarrito(prod)}
+              onClick={() => agregarAlCarrito(producto)}
               className=" flex overflow-hidden rounded border ms-auto px-4 py-2 bg-yellow-400 text-black font-semibold hover:bg-yellow-500 transition-colors duration-300"
             >
               Agregar al carrito

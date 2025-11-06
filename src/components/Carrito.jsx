@@ -22,14 +22,14 @@ const Carrito = () => {
         {/* Imagen + Detalles */}
         <div className="flex items-center gap-4">
           <img
-            src={producto.image}
-            alt={producto.title}
+            src={producto.imagen}
+            alt={producto.nombre}
             className="w-20 h-20 object-contain rounded-md"
           />
           <div>
-            <h3 className="font-semibold text-gray-800">{producto.title}</h3>
-            <p className="text-gray-600 text-sm line-clamp-2">{producto.description}</p>
-            <p className="text-emerald-700 font-bold mt-1">${producto.price}</p>
+            <h3 className="font-semibold text-gray-800">{producto.nombre}</h3>
+            <p className="text-gray-600 text-sm line-clamp-2">{producto.descripcion}</p>
+            <p className="text-emerald-700 font-bold mt-1">${producto.precio}</p>
           </div>
         </div>
 
