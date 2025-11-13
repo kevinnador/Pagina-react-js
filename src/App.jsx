@@ -2,7 +2,6 @@
 import './App.css'
 import Header from './components/Header'
 import Nav from './components/Nav'
-import Main from './components/Main'
 import Footer from './components/Footer'
 import Inicio from './Paginas/Inicio'
 import DetalleProducto from './Paginas/DetalleProducto'
@@ -17,7 +16,6 @@ function App() {
     <div>
       <Header />
       <Nav />
-      <Main />
       <Routes>
         <Route path="/Inicio" element={<Inicio /> } />
         <Route path='/Admin' element={
