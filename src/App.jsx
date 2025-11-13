@@ -10,8 +10,7 @@ import { Routes, Route} from 'react-router-dom'
 import RutaProtegida from './components/Protected/RutaProtegida'
 import Login from './components/Protected/Login'
 import Carrito from './components/Carrito'
-import Admin from './components/Protected/Admin'
-
+import Admin from './components/admin'
 function App() {
 
   return (
