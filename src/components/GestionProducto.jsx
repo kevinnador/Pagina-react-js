@@ -1,134 +1,129 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import FormProducto from "./FormProducto";
-import EditarProducto from "./EditarProducto";
-import styles from "./GestionProducto.module.css";
-import CirclePlus from "../assets/CirclePlus.jsx";
+import { useProductosContext } from "../context/ProductoContext";
+import CirclePlus from "../assets/CirclePlus";
+import SquarePen from "../assets/SquarePen";
+import TrashIcon from "../assets/TrashIcon";
 
 const GestionProductos = () => {
-  const [productos, setProductos] = useState([]);
+  const { productos, eliminarProducto } = useProductosContext();
+
+  const [mostrarForm, setMostrarForm] = useState(false);
+  const [modoFormulario, setModoFormulario] = useState("agregar");
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
-  const [cargando, setCargando] = useState(true);
-  const API = "https://690bf8e96ad3beba00f6bbf1.mockapi.io/Productos";
 
-  // Cargar productos al montar el componente
-  useEffect(() => {
-    cargarProductos();
-  }, []);
-
-  const cargarProductos = async () => {
-    try {
-      setCargando(true);
-      const respuesta = await fetch(API);
-      const datos = await respuesta.json();
-      setProductos(datos);
-
-    } catch (error) {
-      console.error("Error al cargar productos:", error);
-      alert("Error al cargar los productos");
-
-    } finally {
-      setCargando(false);
-    }
+  const abrirFormularioAgregar = () => {
+    setModoFormulario("agregar");
+    setProductoSeleccionado(null);
+    setMostrarForm(true);
   };
 
-  // Función para seleccionar un producto
-  const seleccionarProducto = (producto) => {
+  const abrirFormularioEditar = (producto) => {
+    setModoFormulario("editar");
     setProductoSeleccionado(producto);
+    setMostrarForm(true);
   };
 
-  if (cargando) 
-    return <div>Cargando productos...</div>;
-
-  // Funcion para agregar el producto a la API
-  const agregarProducto = async (producto) => {
-    try {
-      const respuesta = await fetch(API, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(producto)
-      });
-
-      if (!respuesta.ok) 
-        throw new Error("Error al agregar el producto.");
-
-      const datos = await respuesta.json();
-      console.log("Producto agregado: ", datos);
-      alert("Producto agregado correctamente");
-
-      //Agregar el nuevo producto a la lista
-      setProductos([...productos, datos]);
-
-    } catch (error) {
-        console.error(error.message);
-        alert("Hubo un problema al agregar el producto.");
-    }
+  const cerrarFormulario = () => {
+    setMostrarForm(false);
+    setProductoSeleccionado(null);
   };
 
-  // Funcion para eliminar producto de la API
-  const eliminarProducto = async (id) => {
-    const confirmar = window.confirm("¿Estás seguro de eliminar?");
+return (
+  <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
 
-    if (confirmar) {
-      try {
-        const respuesta = await fetch(`${API}/${id}`, {
-            method: "DELETE",
-          }
-        );
+    {/* Contenedor centrado ancho real */}
+    <div className="mx-auto max-w-4xl">
 
-        if (!respuesta.ok) 
-          throw new Error("Error al eliminar");  
-        // Filtra y crea un nuevo array sin el producto eliminado
-        setProductos(productos.filter(p => p.id !== id));
-      } 
-      catch (error) {
-        console.error(error.message);
-        alert("Hubo un problema al eliminar el producto.");
-      }
-    }
-  };
+      {/* Header */}
+      <header className="text-center mb-6">
+        <h1 className="text-xl font-bold text-gray-900 sm:text-3xl">
+          Lista de Productos
+        </h1>
+      </header>
 
-  //actualizar el producto
-  const actualizarProducto = (productoActualizado) => {
-  setProductos(productos.map(p => 
-    p.id === productoActualizado.id ? productoActualizado : p
-  ));
-};
+      {/* Botón agregar */}
+      <button
+        onClick={abrirFormularioAgregar}
+        className="inline-flex items-center gap-2 rounded-md bg-yellow-400 px-4 py-2 text-sm font-semibold text-black hover:bg-yellow-500 transition"
+      >
+        <CirclePlus className="size-4" />
+        Agregar Producto
+      </button>
 
-    return (
-    <div>
-        <div className={styles.container}>
-        <div className={styles.panelLista}>
-        <div className={styles.botonAgregarProducto}>
-        <CirclePlus /> 
-        <p>Agregar Producto</p>
-    </div>    
-    {productos.map((producto) => (
-        <div
-        key={producto.id}
-        onClick={() => seleccionarProducto(producto)}
-        className={styles.productoItem}
-        > 
-            <img className={styles.imagen} src={producto.imagen} alt={producto.nombre} />
-            <h3>{producto.nombre}</h3>
-            <p>Precio: ${producto.precio}</p>
-            <button onClick={() => eliminarProducto(producto.id)}>Eliminar</button>
+      {/* Lista */}
+      <div className="mt-8">
+        <ul className="flex flex-col gap-4">
+
+          {productos.map((producto) => (
+            <li
+              key={producto.id}
+              className="flex items-center justify-between gap-4 p-3 rounded-lg border border-gray-200 shadow-sm"
+            >
+              {/* Sección izquierda */}
+              <div className="flex items-center gap-4">
+
+                {/* Imagen */}
+                <img
+                  src={producto.imagen}
+                  alt={producto.nombre}
+                  className="w-16 h-16 rounded-md object-cover border"
+                />
+
+                {/* Texto */}
+                <div>
+                  <h3 className="text-lg font-bold text-gray-900">
+                    {producto.nombre}
+                  </h3>
+
+                  <p className="text-lg font-semibold text-gray-800 mt-1">
+                    Precio: ARS ${producto.precio}
+                  </p>
+                  <p className="text-sm text-gray-600 mt-1">
+                    Tipo: <span className="font-medium">{producto.tipo}</span>
+                  </p>
+                </div>
+              </div>
+
+              {/* Acciones */}
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => abrirFormularioEditar(producto)}
+                  className="text-gray-600 hover:text-yellow-500"
+                >
+                  <SquarePen className="size-4" />
+                </button>
+
+                <button
+                  onClick={() => eliminarProducto(producto.id)}
+                  className="text-gray-600 hover:text-red-600"
+                >
+                  <TrashIcon className="size-4" />
+                </button>
+              </div>
+            </li>
+          ))}
+
+          {productos.length === 0 && (
+            <p className="text-center text-gray-500">No hay productos</p>
+          )}
+        </ul>
+      </div>
+
+      {/* Modal */}
+      {mostrarForm && (
+        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex justify-center items-center p-4 z-50">
+          <div className="bg-white w-full max-w-4xl p-6 rounded-2xl shadow-2xl">
+            <FormProducto
+              productoInicial={productoSeleccionado || {}}
+              modo={modoFormulario}
+              onCerrar={cerrarFormulario}
+            />
+          </div>
         </div>
-    ))}
+      )}
     </div>
-
-    <div className={styles.panelFormularios}>
-    <FormProducto onAgregar={agregarProducto} />
-    <EditarProducto
-        productoSeleccionado={productoSeleccionado}
-        onActualizar={actualizarProducto}
-    />
-    </div>
-    </div>
-
-    </div>
-    );
-};
-
+  </div>
+);
+}
 export default GestionProductos;
