@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
 import { useContext } from "react";
 import { CarritoContext } from "../context/CarritoContext";
+import BarraBusqueda from "./BarraBusqueda";
 
 const Header = () => {
   const { usuario, logout } = useAuthContext();
@@ -12,6 +13,7 @@ const Header = () => {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-[#1c1a18] text-white shadow-lg">
+      
       <nav className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
 
         {/* LOGO → LINK TO INICIO */}
@@ -31,7 +33,7 @@ const Header = () => {
           >
             Inicio
           </Link>
-
+          
           <Link
             to="/carrito"
             className="text-[#f5e9d5] hover:text-[#c8b79c] transition relative"
@@ -54,6 +56,7 @@ const Header = () => {
         <div className="flex items-center gap-4">
 
           {/* CARRITO ICONO CON CONTADOR */}
+          <BarraBusqueda />
           <Link
             to="/carrito"
             className="p-2 border border-[#3b3733] rounded-lg hover:bg-[#2a2724] transition relative"

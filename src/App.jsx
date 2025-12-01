@@ -9,12 +9,17 @@ import RutaProtegida from './components/Protected/RutaProtegida'
 import Login from './components/Protected/Login'
 import Carrito from './components/Carrito'
 import Admin from './components/admin'
+import BuscarPage from "./Paginas/BuscarPage";
+
+
+
 function App() {
 
   return (
     <div>
       <Header />
       <Routes>
+        <Route path="/buscar" element={<BuscarPage />} />
         <Route path="/Inicio" element={<Inicio /> } />
         <Route path='/Admin' element={
           <RutaProtegida>

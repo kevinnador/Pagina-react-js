@@ -1,49 +1,69 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
+
 // eslint-disable-next-line react-refresh/only-export-components
 export const CarritoContext = createContext();
 
+const STORAGE_KEY = "coffeecraft-carrito";
+
 export const CarritoProvider = ({ children }) => {
-    const [carrito, setCarrito] = useState([]);
+  // Cargar carrito desde localStorage
+    const [carrito, setCarrito] = useState(() => {
+        if (typeof window === "undefined") return [];
+        try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        return stored ? JSON.parse(stored) : [];
+        } catch {
+        return [];
+        }
+    });
 
-    // 🔥 Agregar producto con manejo de cantidad
+    // Guardar carrito en localStorage cada vez que cambie
+    useEffect(() => {
+        try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(carrito));
+        } catch {
+        // si falla, no rompemos nada
+        }
+    }, [carrito]);
+
     const agregarAlCarrito = (producto) => {
-        setCarrito((prevCarrito) => {
-        const productoExistente = prevCarrito.find(
-            (item) => item.id === producto.id
-        );
-
-        if (productoExistente) {
-            // Si ya existe, aumentar cantidad
-            return prevCarrito.map((item) =>
+        setCarrito((prev) => {
+        const existente = prev.find((item) => item.id === producto.id);
+        if (existente) {
+            // si ya existe, aumento cantidad
+            return prev.map((item) =>
             item.id === producto.id
                 ? { ...item, cantidad: item.cantidad + 1 }
                 : item
             );
         }
-
-        // Si NO existe, agregar con cantidad 1
-        return [...prevCarrito, { ...producto, cantidad: 1 }];
+        // si no existe, lo agrego con cantidad 1
+        return [...prev, { ...producto, cantidad: 1 }];
         });
     };
 
-    // 🔥 Cambiar cantidad
-    const cambiarCantidad = (id, nuevaCantidad) => {
-        if (nuevaCantidad < 1) return;
-        setCarrito((prev) =>
-        prev.map((item) =>
-            item.id === id ? { ...item, cantidad: nuevaCantidad } : item
-        )
-        );
-    };
-
-    // 🔥 Eliminar producto
     const eliminarProducto = (id) => {
         setCarrito((prev) => prev.filter((item) => item.id !== id));
     };
 
-    // 🔥 Calcular total
+    const cambiarCantidad = (id, cantidad) => {
+        if (cantidad < 1) return;
+        setCarrito((prev) =>
+        prev.map((item) =>
+            item.id === id ? { ...item, cantidad } : item
+        )
+        );
+    };
+
+    const vaciarCarrito = () => setCarrito([]);
+
     const total = carrito.reduce(
         (acc, item) => acc + item.precio * item.cantidad,
+        0
+    );
+
+    const cantidadTotal = carrito.reduce(
+        (acc, item) => acc + item.cantidad,
         0
     );
 
@@ -54,7 +74,9 @@ export const CarritoProvider = ({ children }) => {
             agregarAlCarrito,
             eliminarProducto,
             cambiarCantidad,
+            vaciarCarrito,
             total,
+            cantidadTotal,
         }}
         >
         {children}

@@ -1,91 +1,175 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { CarritoContext } from "../context/CarritoContext";
+import CarritoItem from "./CarritoItem";
+
+const formatearPrecio = (valor) =>
+  new Intl.NumberFormat("es-AR", {
+    style: "currency",
+    currency: "ARS",
+    minimumFractionDigits: 0,
+  }).format(valor);
 
 const Carrito = () => {
-  const { carrito, eliminarProducto, cambiarCantidad, total } =
-    useContext(CarritoContext);
+  const {
+    carrito,
+    eliminarProducto,
+    cambiarCantidad,
+    vaciarCarrito,
+    total,
+    cantidadTotal,
+  } = useContext(CarritoContext);
+
+  const [toast, setToast] = useState(null);
+  const [mostrarConfirmVaciar, setMostrarConfirmVaciar] = useState(false);
+
+  const mostrarToast = (mensaje, tipo = "info") => {
+    setToast({ mensaje, tipo });
+    setTimeout(() => setToast(null), 2200);
+  };
+
+  const handleEliminar = (id) => {
+    eliminarProducto(id);
+    mostrarToast("Producto eliminado del carrito", "error");
+  };
+
+  const handleVaciar = () => {
+    setMostrarConfirmVaciar(true);
+  };
+
+  const confirmarVaciar = () => {
+    vaciarCarrito();
+    setMostrarConfirmVaciar(false);
+    mostrarToast("Carrito vaciado", "info");
+  };
+
+  const cancelarVaciar = () => setMostrarConfirmVaciar(false);
+
+  const hayProductos = carrito.length > 0;
 
   return (
-    <section className="pt-20 px-4">
-      <div className="mx-auto max-w-3xl bg-[#1c1a18] text-[#f5e9d5] shadow-xl rounded-2xl p-6">
-        
-        {/* Título */}
-        <header className="text-center">
-          <h1 className="text-3xl font-bold">Tu Carrito</h1>
-        </header>
+    <section className="pt-24 px-4 pb-16 bg-[#f5f3ef] min-h-screen relative overflow-hidden">
+      {/* FONDO DECORATIVO SUAVE */}
+      <div className="pointer-events-none absolute -top-32 -left-24 w-72 h-72 rounded-full bg-amber-200/30 blur-3xl" />
+      <div className="pointer-events-none absolute bottom-0 -right-24 w-80 h-80 rounded-full bg-neutral-300/30 blur-3xl" />
 
-        {/* Si está vacío */}
-        {carrito.length === 0 && (
-          <p className="text-center text-[#c8b79c] mt-6">
-            Tu carrito está vacío ☕
-          </p>
-        )}
+      <div className="relative mx-auto max-w-5xl grid grid-cols-1 lg:grid-cols-3 gap-10">
+        {/* LISTA DE PRODUCTOS */}
+        <div className="lg:col-span-2 bg-white/90 backdrop-blur rounded-2xl shadow-xl p-6 border border-neutral-200">
+          <div className="flex justify-between items-center pb-4 border-b">
+            <h1 className="text-2xl font-bold text-neutral-900">
+              Carrito de compras
+            </h1>
+            {hayProductos && (
+              <button
+                onClick={handleVaciar}
+                className="text-sm text-red-500 hover:text-red-700 underline-offset-2 hover:underline"
+              >
+                Vaciar carrito
+              </button>
+            )}
+          </div>
 
-        {/* Lista */}
-        <ul className="mt-8 space-y-5">
-          {carrito.map((item) => (
-            <li key={item.id} className="flex items-center gap-4 border-b border-[#3b3733] pb-4">
+          {!hayProductos && (
+            <p className="text-center text-neutral-500 mt-10">
+              Tu carrito está vacío ☕
+            </p>
+          )}
 
-              {/* Imagen */}
-              <img
-                src={item.imagen}
-                alt={item.nombre}
-                className="w-20 h-20 rounded-md object-cover"
-              />
+          {hayProductos && (
+            <ul className="mt-6 space-y-6">
+              {carrito.map((item) => (
+                <CarritoItem
+                  key={item.id}
+                  item={item}
+                  onEliminar={handleEliminar}
+                  onCambiarCantidad={cambiarCantidad}
+                />
+              ))}
+            </ul>
+          )}
+        </div>
 
-              {/* Info */}
-              <div className="flex-1">
-                <h3 className="text-lg font-semibold">{item.nombre}</h3>
-                <p className="text-sm text-[#d4a574]">
-                  ${item.precio} c/u
-                </p>
+        {/* RESUMEN / TOTAL */}
+        {hayProductos && (
+          <div className="bg-white/95 backdrop-blur rounded-2xl shadow-xl p-6 h-fit border border-neutral-200 lg:sticky lg:top-28">
+            <h2 className="text-xl font-bold text-neutral-900 pb-3 border-b">
+              Resumen
+            </h2>
 
-                {/* Cantidad */}
-                <div className="mt-2 flex items-center gap-2">
-                  <input
-                    type="number"
-                    min="1"
-                    value={item.cantidad}
-                    onChange={(e) =>
-                      cambiarCantidad(item.id, Number(e.target.value))
-                    }
-                    className="w-14 bg-[#2a2724] border border-[#3b3733] text-center text-white rounded-md"
-                  />
-                  <span className="text-sm">
-                    Subtotal:{" "}
-                    <strong className="text-[#d4a574]">
-                      ${item.precio * item.cantidad}
-                    </strong>
-                  </span>
-                </div>
+            <div className="mt-4 space-y-3 text-neutral-700">
+              <div className="flex justify-between">
+                <span>Productos ({cantidadTotal})</span>
+                <span className="font-semibold">
+                  {formatearPrecio(total)}
+                </span>
               </div>
 
-              {/* Eliminar */}
-              <button
-                onClick={() => eliminarProducto(item.id)}
-                className="text-red-400 hover:text-red-600 transition"
-              >
-                ✖
-              </button>
-            </li>
-          ))}
-        </ul>
+              <div className="flex justify-between">
+                <span>Envío</span>
+                <span className="font-semibold text-green-600">Gratis</span>
+              </div>
 
-        {/* Total */}
-        {carrito.length > 0 && (
-          <div className="mt-10 border-t border-[#3b3733] pt-6">
-            <div className="flex justify-between text-lg font-medium">
-              <span>Total:</span>
-              <span className="text-[#d4a574]">${total}</span>
+              <div className="pt-4 mt-4 border-t flex justify-between text-lg font-semibold">
+                <span>Total</span>
+                <span className="text-neutral-900">
+                  {formatearPrecio(total)}
+                </span>
+              </div>
             </div>
 
-            <button className="mt-6 w-full bg-[#d4a574] hover:bg-[#c28c52] text-black font-semibold py-3 rounded-xl transition">
+            <button className="mt-6 w-full bg-neutral-900 hover:bg-black text-white font-semibold py-3 rounded-xl transition shadow-md hover:shadow-lg">
               Finalizar Compra
             </button>
+
+            <p className="mt-3 text-xs text-neutral-500 text-center">
+              Podrás elegir método de pago y envío en el próximo paso.
+            </p>
           </div>
         )}
-
       </div>
+
+      {/* TOAST */}
+      {toast && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40">
+          <div
+            className={`px-4 py-2 rounded-full shadow-lg text-sm text-white ${
+              toast.tipo === "error"
+                ? "bg-red-500/95"
+                : "bg-neutral-900/95"
+            }`}
+          >
+            {toast.mensaje}
+          </div>
+        </div>
+      )}
+
+      {/* MODAL CONFIRMAR VACIAR */}
+      {mostrarConfirmVaciar && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-30">
+          <div className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-sm">
+            <h3 className="text-lg font-semibold text-neutral-900 mb-2">
+              ¿Vaciar carrito?
+            </h3>
+            <p className="text-sm text-neutral-600 mb-4">
+              Esta acción eliminará todos los productos del carrito.
+            </p>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={cancelarVaciar}
+                className="px-4 py-2 rounded-lg text-sm bg-neutral-200 hover:bg-neutral-300"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={confirmarVaciar}
+                className="px-4 py-2 rounded-lg text-sm bg-red-500 text-white hover:bg-red-600"
+              >
+                Vaciar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };

@@ -3,82 +3,92 @@ import { CarritoContext } from "../context/CarritoContext";
 import { useProductosContext } from "../context/ProductoContext";
 import { useContext } from "react";
 
-const Productos = () => {
-  
+const formatPrice = (precio) =>
+  new Intl.NumberFormat("es-AR", {
+    style: "currency",
+    currency: "ARS",
+    minimumFractionDigits: 0,
+  }).format(precio);
+
+const Productos = ({ lista }) => {
   const { productos, cargando, error } = useProductosContext();
   const { agregarAlCarrito } = useContext(CarritoContext);
 
-  if (cargando) return 'Cargando productos...';
+  const productosAMostrar = lista ?? productos;
+
+  if (cargando) return "Cargando productos...";
   if (error) return error;
 
-return (
-<div className="max-w-6xl mx-auto p-6">
-  <h2 className="text-3xl font-bold text-neutral-100 mb-6 border-b pb-2">
-    Nuestros Cafés
-  </h2>
+  return (
+    <div className="max-w-7xl mx-auto px-4 py-20">
+      <h2 className="text-4xl font-bold text-neutral-100 mb-10">
+        Nuestros Productos
+      </h2>
 
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-    {productos.map((producto) => (
-      <div key={producto.id} className="group flex flex-col bg-neutral-900 p-4 rounded-2xl shadow-xl border border-neutral-800">
-        
-        {/* Imagen */}
-        <div className="relative">
-          <div className="aspect-square overflow-hidden rounded-2xl">
-            <img
-              src={producto.imagen}
-              alt={producto.nombre}
-              className="w-full h-full object-cover rounded-2xl"
-            />
-          </div>
-
-          {/* Nombre + Precio */}
-          <div className="pt-4">
-            <h3 className="font-medium text-lg text-white">
-              {producto.nombre}
-            </h3>
-
-            <p className="mt-2 font-semibold text-yellow-400">
-              ${producto.precio}
-            </p>
-          </div>
-        </div>
-
-        {/* DETALLES (Descripción corta simulada) */}
-        <div className="mb-4 mt-4 text-sm text-neutral-300">
-
-          <div className="py-3 border-t border-neutral-700">
-            <span className="font-medium text-white">Descripción:</span>
-            <p className="mt-1 text-neutral-300 line-clamp-2">
-              {producto.descripcion}
-            </p>
-          </div>
-        </div>
-
-        {/* BOTONES */}
-        <div className="mt-auto flex gap-3">
-
-          <Link
-            to={`/productos/${producto.id}`}
-            className="px-4 py-2 rounded-xl bg-neutral-700 hover:bg-neutral-600 text-white text-sm transition w-full text-center"
+      {/* GRID DE PRODUCTOS */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+        {productosAMostrar.map((producto) => (
+          <div
+            key={producto.id}
+            className="bg-neutral-900 rounded-2xl border border-neutral-800 shadow-xl overflow-hidden 
+                transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl group"
           >
-            Detalle
-          </Link>
+            {/* IMAGEN */}
+            <div className="relative w-full aspect-square overflow-hidden">
+              <img
+                src={producto.imagen}
+                alt={producto.nombre}
+                className="w-full h-full object-cover transition duration-300 group-hover:scale-105"
+              />
 
-          <button
-            onClick={() => agregarAlCarrito(producto)}
-            className="px-4 py-2 rounded-xl bg-yellow-400 hover:bg-yellow-500 text-black font-semibold text-sm w-full transition"
-          >
-            Agregar
-          </button>
+              {/* TIPO */}
+              <span className="absolute top-3 left-3 bg-neutral-800/80 text-white text-xs px-3 py-1 rounded-full backdrop-blur">
+                {producto.tipo}
+              </span>
+            </div>
 
-        </div>
+            {/* CONTENIDO */}
+            <div className="p-5 flex flex-col gap-3">
 
+              {/* NOMBRE */}
+              <h3 className="text-xl font-semibold text-white leading-tight group-hover:text-yellow-400 transition">
+                {producto.nombre}
+              </h3>
+
+              {/* PRECIO */}
+              <p className="text-[20px] font-bold text-yellow-400">
+                {formatPrice(producto.precio)}
+              </p>
+
+              {/* DESCRIPCION */}
+              <p className="text-neutral-400 text-sm line-clamp-2">
+                {producto.descripcion}
+              </p>
+
+              {/* BOTONES */}
+              <div className="flex gap-3 mt-4">
+
+                <Link
+                  to={`/productos/${producto.id}`}
+                  className="flex-1 py-2 rounded-xl bg-neutral-700 hover:bg-neutral-600 text-white text-center transition"
+                >
+                  Ver detalle
+                </Link>
+
+                <button
+                  onClick={() => agregarAlCarrito(producto)}
+                  className="flex-1 py-2 rounded-xl bg-yellow-400 hover:bg-yellow-500 text-black font-semibold transition"
+                >
+                  Añadir
+                </button>
+
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
-    ))}
-  </div>
-</div>
-);
-
+    </div>
+  );
 };
 
 export default Productos;
