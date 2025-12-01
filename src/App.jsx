@@ -10,21 +10,19 @@ import Carrito from './components/Carrito'
 import Admin from './components/admin'
 import BuscarPage from "./Paginas/BuscarPage";
 import ProductosCategoria from './components/ProductosCategoria'
+import Navbar from './components/Navbar'
 
 function App() {
 
   return (
     <div>
       <Header />
-
+      <Navbar />
       <Routes>
-
         {/* Buscador */}
         <Route path="/buscar" element={<BuscarPage />} />
-
         {/* Inicio */}
         <Route path="/inicio" element={<Inicio />} />
-
         {/* Admin protegido */}
         <Route
           path="/admin"
@@ -34,7 +32,6 @@ function App() {
             </RutaProtegida>
           }
         />
-
         {/* Carrito protegido */}
         <Route
           path="/carrito"
@@ -44,7 +41,6 @@ function App() {
             </RutaProtegida>
           }
         />
-
         {/* Categorías */}
         <Route
           path="/productos/granos"
@@ -52,27 +48,20 @@ function App() {
             <ProductosCategoria categoria="granos" titulo="Granos" />
           }
         />
-
         <Route
           path="/productos/capsulas"
           element={
             <ProductosCategoria categoria="capsulas" titulo="Cápsulas" />
           }
         />
-
         <Route
           path="/productos/accesorios"
           element={
             <ProductosCategoria categoria="accesorios" titulo="Accesorios" />
           }
         />
-
-        {/* Login */}
         <Route path="/login" element={<Login />} />
-
-        {/* DETALLE DE PRODUCTO (RUTA CORRECTA) */}
-        <Route path="/producto/:id" element={<DetalleProducto />} />
-
+        <Route path="/productos/:id" element={<DetalleProducto />} />
       </Routes>
       <Footer />
     </div>

@@ -2,99 +2,72 @@ import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { CarritoContext } from "../context/CarritoContext";
 
-const ProductoCard = ({ producto }) => {
+const formatPrice = (precio) =>
+    new Intl.NumberFormat("es-AR", {
+        style: "currency",
+        currency: "ARS",
+        minimumFractionDigits: 0,
+    }).format(precio);
 
+    const ProductoCard = ({ producto }) => {
     const { agregarAlCarrito } = useContext(CarritoContext);
-
-    // Badge inteligente
-    const getBadge = () => {
-        if (producto.precio > 19000) return { text: "Top", color: "bg-purple-600" };
-        if (producto.tipo === "granos") return { text: "Especialidad", color: "bg-green-600" };
-        if (producto.tipo === "capsulas") return { text: "Express", color: "bg-blue-600" };
-        return { text: "Nuevo", color: "bg-yellow-600 text-black" };
-    };
-
-    const badge = getBadge();
 
     return (
         <article
         className="
-            bg-[#1c1a18]
-            border border-[#3b3733]
-            rounded-xl shadow-lg overflow-hidden
-            hover:shadow-2xl hover:scale-[1.03]
-            transition-all duration-300 group
+            bg-neutral-900 rounded-2xl border border-neutral-800 shadow-xl 
+            overflow-hidden transition-transform duration-300 
+            hover:-translate-y-2 hover:shadow-2xl group
         "
         >
-        {/* Imagen */}
-        <div className="relative w-full h-56 overflow-hidden">
+        {/* LINK ENVUELVE TODA LA PARTE SUPERIOR */}
+        <Link to={`/productos/${producto.id}`}>
+            <div className="relative w-full aspect-square overflow-hidden">
             <img
-            src={producto.imagen}
-            alt={producto.nombre}
-            className="w-full h-full object-cover group-hover:scale-110 transition duration-700"
+                src={producto.imagen}
+                alt={producto.nombre}
+                className="w-full h-full object-cover transition duration-300 group-hover:scale-105"
             />
 
-            {/* Badge */}
-            <span
-            className={`absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-bold text-white ${badge.color}`}
-            >
-            {badge.text}
+            {/* TIPO */}
+            <span className="absolute top-3 left-3 bg-neutral-800/80 text-white text-xs px-3 py-1 rounded-full backdrop-blur">
+                {producto.tipo}
             </span>
+            </div>
 
-            {/* Favorito */}
-            <button
-            className="
-                absolute top-3 right-3 w-9 h-9 rounded-full
-                bg-black/40 backdrop-blur-sm flex items-center justify-center
-                text-white hover:bg-black/60 transition
-            "
-            >
-            ❤️
-            </button>
-        </div>
+            <div className="px-5 pt-5 flex flex-col gap-3">
+            {/* NOMBRE */}
+            <h3 className="text-xl font-semibold text-white leading-tight group-hover:text-yellow-400 transition">
+                {producto.nombre}
+            </h3>
 
-        {/* Contenido */}
-        <div className="p-4 flex flex-col gap-3">
-
-            <h2 className="text-xl font-bold text-[#f5e9d5] group-hover:text-yellow-500 transition">
-            {producto.nombre}
-            </h2>
-
-            <p className="text-sm text-gray-300 line-clamp-2">
-            {producto.descripcion}
+            {/* PRECIO */}
+            <p className="text-[20px] font-bold text-yellow-400">
+                {formatPrice(producto.precio)}
             </p>
 
-            <span className="text-xs px-2 py-1 bg-[#2a2724] border border-[#3b3733] rounded-full text-gray-300 w-fit">
-            {producto.tipo}
-            </span>
-
-            <p className="text-2xl font-extrabold text-yellow-500">
-            ${producto.precio}
+            {/* DESCRIPCION */}
+            <p className="text-neutral-400 text-sm line-clamp-2">
+                {producto.descripcion}
             </p>
+            </div>
+        </Link>
 
-            <div className="flex gap-3 mt-2">
-
+        {/* BOTONES */}
+        <div className="p-5 flex gap-3">
             <Link
-                to={`/producto/${producto.id}`}
-                className="
-                flex-1 text-center bg-[#3b3733] text-[#f5e9d5]
-                font-semibold py-2 rounded-lg hover:bg-[#4a4541] transition
-                "
+            to={`/productos/${producto.id}`}
+            className="flex-1 py-2 rounded-xl bg-neutral-700 hover:bg-neutral-600 text-white text-center transition"
             >
-                Ver detalle
+            Ver detalle
             </Link>
 
             <button
-                onClick={() => agregarAlCarrito(producto)}
-                className="
-                flex-1 bg-yellow-500 text-black font-semibold
-                py-2 rounded-lg hover:bg-yellow-400 transition
-                "
+            onClick={() => agregarAlCarrito(producto)}
+            className="flex-1 py-2 rounded-xl bg-yellow-400 hover:bg-yellow-500 text-black font-semibold transition"
             >
-                Agregar
+            Añadir
             </button>
-
-            </div>
         </div>
         </article>
     );

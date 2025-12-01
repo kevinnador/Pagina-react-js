@@ -32,9 +32,7 @@ const Carrito = () => {
     mostrarToast("Producto eliminado del carrito", "error");
   };
 
-  const handleVaciar = () => {
-    setMostrarConfirmVaciar(true);
-  };
+  const handleVaciar = () => setMostrarConfirmVaciar(true);
 
   const confirmarVaciar = () => {
     vaciarCarrito();
@@ -47,36 +45,44 @@ const Carrito = () => {
   const hayProductos = carrito.length > 0;
 
   return (
-    <section className="pt-24 px-4 pb-16 bg-[#f5f3ef] min-h-screen relative overflow-hidden">
-      {/* FONDO DECORATIVO SUAVE */}
-      <div className="pointer-events-none absolute -top-32 -left-24 w-72 h-72 rounded-full bg-amber-200/30 blur-3xl" />
-      <div className="pointer-events-none absolute bottom-0 -right-24 w-80 h-80 rounded-full bg-neutral-300/30 blur-3xl" />
+    <section className="pt-10 px-6 pb-20 bg-[#f5f3ef] min-h-screen relative overflow-hidden">
 
-      <div className="relative mx-auto max-w-5xl grid grid-cols-1 lg:grid-cols-3 gap-10">
+      {/* FONDO DECORATIVO */}
+      <div className="pointer-events-none absolute -top-40 -left-32 w-96 h-96 rounded-full bg-amber-200/30 blur-[80px]" />
+      <div className="pointer-events-none absolute bottom-0 -right-32 w-96 h-96 rounded-full bg-neutral-300/30 blur-[80px]" />
+
+      {/* CONTENIDO CENTRAL */}
+      <div className="relative mx-auto max-w-6xl grid grid-cols-1 lg:grid-cols-3 gap-12">
+
         {/* LISTA DE PRODUCTOS */}
-        <div className="lg:col-span-2 bg-white/90 backdrop-blur rounded-2xl shadow-xl p-6 border border-neutral-200">
-          <div className="flex justify-between items-center pb-4 border-b">
-            <h1 className="text-2xl font-bold text-neutral-900">
-              Carrito de compras
+        <div className="lg:col-span-2 bg-white/90 backdrop-blur rounded-2xl shadow-xl p-8 border border-neutral-200">
+          
+          {/* HEADER */}
+          <div className="flex justify-between items-center pb-5 border-b">
+            <h1 className="text-3xl font-bold text-neutral-900 tracking-tight">
+              Tu Carrito
             </h1>
+
             {hayProductos && (
               <button
                 onClick={handleVaciar}
-                className="text-sm text-red-500 hover:text-red-700 underline-offset-2 hover:underline"
+                className="text-sm text-red-500 hover:text-red-700 hover:underline underline-offset-2"
               >
                 Vaciar carrito
               </button>
             )}
           </div>
 
+          {/* CARRITO VACÍO */}
           {!hayProductos && (
-            <p className="text-center text-neutral-500 mt-10">
+            <p className="text-center text-neutral-600 mt-10 text-lg">
               Tu carrito está vacío ☕
             </p>
           )}
 
+          {/* ITEMS DEL CARRITO */}
           {hayProductos && (
-            <ul className="mt-6 space-y-6">
+            <ul className="mt-8 space-y-6">
               {carrito.map((item) => (
                 <CarritoItem
                   key={item.id}
@@ -87,21 +93,20 @@ const Carrito = () => {
               ))}
             </ul>
           )}
+
         </div>
 
-        {/* RESUMEN / TOTAL */}
+        {/* RESUMEN DEL PEDIDO */}
         {hayProductos && (
-          <div className="bg-white/95 backdrop-blur rounded-2xl shadow-xl p-6 h-fit border border-neutral-200 lg:sticky lg:top-28">
-            <h2 className="text-xl font-bold text-neutral-900 pb-3 border-b">
+          <div className="bg-white/95 backdrop-blur rounded-2xl shadow-xl p-8 h-fit border border-neutral-200 lg:sticky lg:top-24">
+            <h2 className="text-2xl font-bold text-neutral-900 pb-4 border-b">
               Resumen
             </h2>
 
-            <div className="mt-4 space-y-3 text-neutral-700">
+            <div className="mt-6 space-y-4 text-neutral-700 text-base">
               <div className="flex justify-between">
                 <span>Productos ({cantidadTotal})</span>
-                <span className="font-semibold">
-                  {formatearPrecio(total)}
-                </span>
+                <span className="font-semibold">{formatearPrecio(total)}</span>
               </div>
 
               <div className="flex justify-between">
@@ -109,23 +114,22 @@ const Carrito = () => {
                 <span className="font-semibold text-green-600">Gratis</span>
               </div>
 
-              <div className="pt-4 mt-4 border-t flex justify-between text-lg font-semibold">
+              <div className="pt-5 mt-5 border-t flex justify-between text-xl font-semibold">
                 <span>Total</span>
-                <span className="text-neutral-900">
-                  {formatearPrecio(total)}
-                </span>
+                <span className="text-neutral-900">{formatearPrecio(total)}</span>
               </div>
             </div>
 
-            <button className="mt-6 w-full bg-neutral-900 hover:bg-black text-white font-semibold py-3 rounded-xl transition shadow-md hover:shadow-lg">
+            <button className="mt-8 w-full bg-neutral-900 hover:bg-black text-white font-semibold py-4 rounded-xl transition shadow-md hover:shadow-lg text-lg">
               Finalizar Compra
             </button>
 
-            <p className="mt-3 text-xs text-neutral-500 text-center">
+            <p className="mt-4 text-xs text-neutral-500 text-center">
               Podrás elegir método de pago y envío en el próximo paso.
             </p>
           </div>
         )}
+
       </div>
 
       {/* TOAST */}
@@ -153,6 +157,7 @@ const Carrito = () => {
             <p className="text-sm text-neutral-600 mb-4">
               Esta acción eliminará todos los productos del carrito.
             </p>
+
             <div className="flex justify-end gap-3">
               <button
                 onClick={cancelarVaciar}
@@ -170,6 +175,7 @@ const Carrito = () => {
           </div>
         </div>
       )}
+
     </section>
   );
 };

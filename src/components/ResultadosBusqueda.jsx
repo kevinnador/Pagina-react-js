@@ -7,11 +7,14 @@ const ResultadosBusqueda = () => {
     const { busqueda } = useContext(BusquedaContext);
     const { productos } = useProductosContext();
 
-    if (!busqueda.trim()) return null;
+    const termino = busqueda.trim().toLowerCase();
 
-    const filtrados = productos.filter((producto) =>
-        producto.nombre.toLowerCase().includes(busqueda.toLowerCase())
-    );
+    const filtrados =
+        termino === ""
+        ? productos
+        : productos.filter((producto) =>
+            producto.nombre.toLowerCase().includes(termino)
+            );
 
     return (
         <div style={{ padding: "20px" }}>
@@ -25,5 +28,3 @@ const ResultadosBusqueda = () => {
 };
 
 export default ResultadosBusqueda;
-
-
