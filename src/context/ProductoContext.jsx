@@ -97,10 +97,14 @@ export const ProductosProvider = ({ children }) => {
       setError("Hubo un problema al eliminar el producto.");
     }
   };
+  // Normalización para aceptar singular/plural
+  const normalizar = (str) =>
+    str?.toLowerCase().trim().replace(/s$/, ""); // elimina la S final
 
-  // ➤ NUEVO: obtener productos por tipo sin romper nada
   const getProductosPorTipo = (tipo) => {
-    return productos.filter(p => p.tipo?.toLowerCase() === tipo.toLowerCase());
+    return productos.filter(
+      p => normalizar(p.tipo) === normalizar(tipo)
+    );
   };
 
   return (

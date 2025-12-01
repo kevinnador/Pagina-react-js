@@ -109,9 +109,9 @@ const FormProducto = ({ productoInicial = {}, modo = "agregar", onCerrar }) => {
               className="border rounded-md px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-yellow-600"
             >
               <option value="">Seleccionar tipo...</option>
-              <option value="capsulas">capsulas</option>
-              <option value="grano">grano</option>
-              <option value="accesorios">accesorios</option>
+              <option value="granos">Granos</option>
+              <option value="capsulas">Cápsulas</option>
+              <option value="accesorios">Accesorios</option>
             </select>
           </div>
 

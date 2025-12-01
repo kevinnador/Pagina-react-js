@@ -19,7 +19,8 @@ const ProductoDetalle = () => {
   const [cantidad, setCantidad] = useState(1);
   const [agregado, setAgregado] = useState(false);
 
-  const producto = productos.find((p) => p.id === id);
+  const producto = productos.find((p) => String(p.id) === String(id));
+
 
   const addToCart = () => {
     for (let i = 0; i < cantidad; i++) agregarAlCarrito(producto);
