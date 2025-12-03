@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useProductosContext } from "../context/ProductoContext";
 import { CarritoContext } from "../context/CarritoContext";
+import { addToCartFeedback } from "../utils/addToCartFeedback";
 
 const formatPrice = (precio) =>
   new Intl.NumberFormat("es-AR", {
@@ -22,12 +23,11 @@ const ProductoDetalle = () => {
   const producto = productos.find((p) => String(p.id) === String(id));
 
 
-  const addToCart = () => {
-    for (let i = 0; i < cantidad; i++) agregarAlCarrito(producto);
+const addToCart = () => {
+  for (let i = 0; i < cantidad; i++) agregarAlCarrito(producto);
 
-    setAgregado(true);
-    setTimeout(() => setAgregado(false), 1800);
-  };
+  addToCartFeedback(setAgregado);
+};
 
   const inc = () => setCantidad(cantidad + 1);
   const dec = () => cantidad > 1 && setCantidad(cantidad - 1);

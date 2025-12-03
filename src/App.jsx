@@ -11,6 +11,7 @@ import Admin from './components/admin'
 import BuscarPage from "./Paginas/BuscarPage";
 import ProductosCategoria from './components/ProductosCategoria'
 import Navbar from './components/Navbar'
+import ScrollToTop from './components/ScrollToTop'
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
     <div>
       <Header />
       <Navbar />
+      <ScrollToTop />
       <Routes>
         {/* Buscador */}
         <Route path="/buscar" element={<BuscarPage />} />

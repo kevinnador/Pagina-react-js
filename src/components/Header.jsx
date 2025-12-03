@@ -80,14 +80,24 @@ const Header = () => {
 
           {/* USUARIO */}
           {estaLogueado && (
-            <span className="px-3 py-1 rounded-lg bg-[#2a2724] text-sm text-gray-300 border border-[#3b3733]">
+            <span className="
+              max-w-[110px]
+              px-3 py-1
+              rounded-lg 
+              bg-[#2a2724] 
+              text-xs 
+              text-gray-300 
+              border border-[#3b3733] 
+              truncate
+            ">
               {rol === "admin" ? (
-                <span className="text-yellow-400 font-bold">{usuario}</span>
+                <span className="text-yellow-400 font-bold">Admin</span>
               ) : (
-                usuario
+                <span className="text-gray-200">{usuario}</span>
               )}
             </span>
           )}
+
 
           {/* CARRITO */}
           <Link

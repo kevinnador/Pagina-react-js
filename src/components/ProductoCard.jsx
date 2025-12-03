@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
-import { useContext } from "react";
-import { CarritoContext } from "../context/CarritoContext";
+import BotonAgregarCarrito from "./BotonAgregarCarrito";
 
 const formatPrice = (precio) =>
     new Intl.NumberFormat("es-AR", {
@@ -10,7 +9,6 @@ const formatPrice = (precio) =>
     }).format(precio);
 
     const ProductoCard = ({ producto }) => {
-    const { agregarAlCarrito } = useContext(CarritoContext);
 
     return (
         <article
@@ -62,12 +60,8 @@ const formatPrice = (precio) =>
             Ver detalle
             </Link>
 
-            <button
-            onClick={() => agregarAlCarrito(producto)}
-            className="flex-1 py-2 rounded-xl bg-yellow-400 hover:bg-yellow-500 text-black font-semibold transition"
-            >
-            Añadir
-            </button>
+            <BotonAgregarCarrito producto={producto} />
+
         </div>
         </article>
     );
