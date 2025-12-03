@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function SliderCafeteria() {
-
     const slides = [
         {
         imagen: "https://i.pinimg.com/1200x/ee/10/a5/ee10a5c6589656649097ffbbf102e7ec.jpg",
@@ -30,40 +29,37 @@ export default function SliderCafeteria() {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const nextSlide = () => {
-        setCurrentIndex((prev) =>
-        prev === slides.length - 1 ? 0 : prev + 1
-        );
+        setCurrentIndex(prev => (prev === slides.length - 1 ? 0 : prev + 1));
     };
 
     const prevSlide = () => {
-        setCurrentIndex((prev) =>
-        prev === 0 ? slides.length - 1 : prev - 1
-        );
+        setCurrentIndex(prev => (prev === 0 ? slides.length - 1 : prev - 1));
     };
 
     return (
-        <div className="w-full overflow-hidden">
+        <div className="w-full max-w-full overflow-hidden">
 
-        <div className="relative w-full h-[32rem] md:h-[calc(100vh-120px)] bg-[#1c1a17] shadow-xl">
+        <div className="relative w-full max-w-full h-[28rem] md:h-[calc(100vh-120px)] bg-[#1c1a17] shadow-xl overflow-hidden">
 
+            {/* Slides wrapper */}
             <div
-            className="flex transition-transform duration-700"
+            className="flex transition-transform duration-700 max-w-full"
             style={{ transform: `translateX(-${currentIndex * 100}%)` }}
             >
             {slides.map((slide, i) => (
                 <div
                 key={i}
-                className="flex-shrink-0 w-full h-[32rem] md:h-[calc(100vh-120px)] bg-center bg-cover"
+                className="flex-shrink-0 w-full max-w-full h-[28rem] md:h-[calc(100vh-120px)] bg-center bg-cover overflow-hidden"
                 style={{ backgroundImage: `url(${slide.imagen})` }}
                 >
-                {/* Overlay cálido */}
+                {/* Overlay */}
                 <div className="flex flex-col justify-center items-center h-full bg-black/40 backdrop-blur-sm px-6 text-center">
 
-                    <h2 className="text-4xl md:text-6xl font-extrabold text-white drop-shadow-xl">
+                    <h2 className="text-3xl md:text-6xl font-extrabold text-white drop-shadow-xl">
                     {slide.titulo}
                     </h2>
 
-                    <p className="mt-4 text-[#e5d5c2] text-lg md:text-2xl max-w-2xl leading-relaxed">
+                    <p className="mt-3 text-[#e5d5c2] text-base md:text-2xl max-w-xl leading-relaxed">
                     {slide.descripcion}
                     </p>
 
@@ -82,7 +78,9 @@ export default function SliderCafeteria() {
             {/* Flecha izquierda */}
             <button
             onClick={prevSlide}
-            className="absolute inset-y-0 left-0 flex items-center justify-center w-16 text-[#f2e6d8] bg-black/20 hover:bg-black/40 backdrop-blur-md text-5xl transition"
+            className="absolute top-1/2 -translate-y-1/2 left-3 w-10 h-10 rounded-full
+                        flex items-center justify-center text-white text-3xl
+                        bg-black/40 hover:bg-black/60 backdrop-blur-md transition"
             >
             ‹
             </button>
@@ -90,7 +88,9 @@ export default function SliderCafeteria() {
             {/* Flecha derecha */}
             <button
             onClick={nextSlide}
-            className="absolute inset-y-0 right-0 flex items-center justify-center w-16 text-[#f2e6d8] bg-black/20 hover:bg-black/40 backdrop-blur-md text-5xl transition"
+            className="absolute top-1/2 -translate-y-1/2 right-3 w-10 h-10 rounded-full
+                        flex items-center justify-center text-white text-3xl
+                        bg-black/40 hover:bg-black/60 backdrop-blur-md transition"
             >
             ›
             </button>
@@ -99,5 +99,3 @@ export default function SliderCafeteria() {
         </div>
     );
 }
-
-

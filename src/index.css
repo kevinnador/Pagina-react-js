@@ -1,19 +1,38 @@
 @import "tailwindcss";
 
+/* ===== FIX GLOBAL ===== */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden; /* 🚫 evita scroll lateral */
+  background-color: #000; /* fondo real negro como tu diseño */
+}
+
+/* Reset básico */
+* {
+  box-sizing: border-box;
+}
+
+/* Evita que iPhone haga zoom raro */
+body {
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Tipografías */
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  background-color: #242424; /* ✔ si querés fondo oscuro global */
-  color: inherit; /* ✔ deja que Tailwind maneje el color */
+  /* ❌ QUITADO: esto causaba el fondo gris cuando hacías zoom */
+  /* background-color: #242424; */
+  color: inherit;
 }
 
+/* Links */
 a {
   color: inherit;
   text-decoration: none;
-}
-
-* {
-  box-sizing: border-box;
 }
