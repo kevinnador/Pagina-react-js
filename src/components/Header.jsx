@@ -11,35 +11,80 @@ const Header = () => {
 
   return (
     <header className="bg-[#1c1a18] text-white border-b border-white/10 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center gap-8">
+      {/* FILA PRINCIPAL */}
+      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3 md:gap-6">
+        {/* LOGO */}
+        <Link
+          to="/inicio"
+          className="text-2xl md:text-3xl font-bold tracking-wide text-[#f5e9d5] hover:text-yellow-400 transition"
+        >
+          CoffeeCraft
+        </Link>
 
-        {/* TITULO A LA IZQUIERDA */}
-        <div className="flex-1">
+        {/* DERECHA EN MOBILE: usuario + carrito + login/logout (compacto) */}
+        <div className="flex items-center gap-3 md:hidden">
+          {estaLogueado && (
+            <span className="max-w-[90px] truncate text-xs px-2 py-1 rounded-md bg-[#2a2724] border border-[#3b3733]">
+              {rol === "admin" ? `Admin: ${usuario}` : usuario}
+            </span>
+          )}
+
+          {/* CARRITO */}
           <Link
-            to="/inicio"
-            className="text-3xl font-bold tracking-wide text-[#f5e9d5] hover:text-yellow-400 transition"
+            to="/carrito"
+            className="relative p-2 rounded-lg hover:bg-white/10 transition"
           >
-            CoffeeCraft
+            <svg
+              className="w-5 h-5 text-white"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <circle cx="9" cy="21" r="1" />
+              <circle cx="20" cy="21" r="1" />
+              <path d="M1 2h2l3 12a2 2 0 0 0 2 1h10a2 2 0 0 0 2-1l2-8H5" />
+            </svg>
+
+            {carrito.length > 0 && (
+              <span className="absolute -top-1 -right-1 bg-yellow-500 text-black text-[10px] px-1.5 py-[1px] rounded-full">
+                {carrito.length}
+              </span>
+            )}
           </Link>
+
+          {/* LOGIN / LOGOUT */}
+          {estaLogueado ? (
+            <button
+              onClick={logout}
+              className="px-3 py-1 text-xs bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+            >
+              Logout
+            </button>
+          ) : (
+            <Link
+              to="/login"
+              className="px-3 py-1 text-xs bg-yellow-500 text-black font-semibold rounded-lg hover:bg-yellow-600 transition"
+            >
+              Login
+            </Link>
+          )}
         </div>
 
-        {/* BUSCADOR CENTRADO */}
-        <div className="flex-1 flex justify-center">
-          <div className="w-full max-w-2xl"> 
+        {/* CENTRO + DERECHA EN DESKTOP */}
+        <div className="hidden md:flex items-center gap-4 flex-1 justify-end">
+          {/* BUSCADOR CENTRADO (desktop) */}
+          <div className="flex-1 max-w-xl mx-auto">
             <BarraBusqueda />
           </div>
-        </div>
 
-        {/* ACCIONES A LA DERECHA */}
-        <div className="flex items-center gap-4 flex-1 justify-end">
-
-          {/* NOMBRE DEL USUARIO */}
+          {/* USUARIO */}
           {estaLogueado && (
             <span className="px-3 py-1 rounded-lg bg-[#2a2724] text-sm text-gray-300 border border-[#3b3733]">
               {rol === "admin" ? (
-                <span className="text-yellow-400 font-bold">Admin: {usuario}</span>
+                <span className="text-yellow-400 font-bold">{usuario}</span>
               ) : (
-                <span className="text-gray-300">{usuario}</span>
+                usuario
               )}
             </span>
           )}
@@ -84,6 +129,13 @@ const Header = () => {
               Login
             </Link>
           )}
+        </div>
+      </div>
+
+      {/* BUSCADOR EN MOBILE (ABAJO, FULL WIDTH) */}
+      <div className="md:hidden border-t border-white/10 pb-3">
+        <div className="max-w-7xl mx-auto px-4 pt-2">
+          <BarraBusqueda />
         </div>
       </div>
     </header>
