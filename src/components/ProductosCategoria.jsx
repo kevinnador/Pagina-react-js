@@ -23,7 +23,7 @@ const bannerPorCategoria = {
     },
     };
 
-    const ProductosCategoria = ({ categoria, titulo }) => {
+    const ProductosCategoria = ({ categoria }) => {
     const { cargando, error, getProductosPorTipo } = useProductosContext();
 
     // FILTRO DE PRODUCTOS
@@ -58,7 +58,7 @@ const bannerPorCategoria = {
             <div className="absolute inset-0 bg-black/40"></div>
 
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-            <h2 className="text-4xl md:text-5xl font-bold text-[#f5e9d5] drop-shadow-lg">
+            <h2 className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg">
                 {bannerPorCategoria[categoria]?.titulo}
             </h2>
             <p className="mt-2 text-lg text-gray-300">
@@ -69,11 +69,6 @@ const bannerPorCategoria = {
 
         {/* CONTENIDO */}
         <main className="max-w-7xl mx-auto px-4">
-
-            {/* TÍTULO */}
-            <h1 className="text-3xl font-bold text-[#f5e9d5] mb-6">
-            {titulo}
-            </h1>
 
             {/* LISTA DE PRODUCTOS */}
             {productosFiltrados.length === 0 ? (

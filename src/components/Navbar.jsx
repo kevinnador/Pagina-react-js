@@ -1,10 +1,9 @@
+import { Link } from "react-router-dom";
+import { useAuthContext } from "../context/AuthContext";
 
-    import { Link } from "react-router-dom";
-    import { useAuthContext } from "../context/AuthContext";
-
-    const Navbar = () => {
-    const { usuario } = useAuthContext();
-    const esAdmin = usuario === "kevin";
+const Navbar = () => {
+    const { rol } = useAuthContext();
+    const esAdmin = rol === "admin";
 
     return (
         <nav className="bg-[#111] text-white border-b border-white/10 shadow-md">
@@ -19,56 +18,37 @@
         >
             <Link
             to="/inicio"
-            className="
-                hover:text-yellow-400 
-                transition 
-                tracking-widest
-            "
+            className="hover:text-yellow-400 transition tracking-widest"
             >
             INICIO
             </Link>
 
             <Link
             to="/productos/granos"
-            className="
-                hover:text-yellow-400 
-                transition 
-                tracking-widest
-            "
+            className="hover:text-yellow-400 transition tracking-widest"
             >
             GRANOS
             </Link>
 
             <Link
             to="/productos/capsulas"
-            className="
-                hover:text-yellow-400 
-                transition 
-                tracking-widest
-            "
+            className="hover:text-yellow-400 transition tracking-widest"
             >
             CÁPSULAS
             </Link>
 
             <Link
             to="/productos/accesorios"
-            className="
-                hover:text-yellow-400 
-                transition 
-                tracking-widest
-            "
+            className="hover:text-yellow-400 transition tracking-widest"
             >
             ACCESORIOS
             </Link>
 
+            {/* SOLO ADMIN */}
             {esAdmin && (
             <Link
                 to="/admin"
-                className="
-                hover:text-yellow-400 
-                transition 
-                tracking-widest
-                "
+                className="hover:text-yellow-400 transition tracking-widest"
             >
                 ADMIN
             </Link>
@@ -76,7 +56,6 @@
         </div>
         </nav>
     );
-    };
+};
 
 export default Navbar;
-

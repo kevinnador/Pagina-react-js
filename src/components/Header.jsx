@@ -6,7 +6,7 @@ import { useAuthContext } from "../context/AuthContext";
 
 const Header = () => {
   const { carrito } = useContext(CarritoContext);
-  const { usuario, logout } = useAuthContext();
+  const { usuario, rol, logout } = useAuthContext();
   const estaLogueado = !!usuario;
 
   return (
@@ -23,7 +23,7 @@ const Header = () => {
           </Link>
         </div>
 
-        {/* BUSCADOR CENTRADO + MÁS ANCHO */}
+        {/* BUSCADOR CENTRADO */}
         <div className="flex-1 flex justify-center">
           <div className="w-full max-w-2xl"> 
             <BarraBusqueda />
@@ -32,6 +32,17 @@ const Header = () => {
 
         {/* ACCIONES A LA DERECHA */}
         <div className="flex items-center gap-4 flex-1 justify-end">
+
+          {/* NOMBRE DEL USUARIO */}
+          {estaLogueado && (
+            <span className="px-3 py-1 rounded-lg bg-[#2a2724] text-sm text-gray-300 border border-[#3b3733]">
+              {rol === "admin" ? (
+                <span className="text-yellow-400 font-bold">Admin: {usuario}</span>
+              ) : (
+                <span className="text-gray-300">{usuario}</span>
+              )}
+            </span>
+          )}
 
           {/* CARRITO */}
           <Link
@@ -73,7 +84,6 @@ const Header = () => {
               Login
             </Link>
           )}
-
         </div>
       </div>
     </header>

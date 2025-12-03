@@ -13,100 +13,135 @@ const FormProducto = ({ productoInicial = {}, modo = "agregar", onCerrar }) => {
 
   const manejarSubmit = async (evento) => {
     evento.preventDefault();
-
-    if (modo === "agregar") {
-      await agregarProducto(producto);
-    } else {
-      await editarProducto(producto);
-    }
-
+    modo === "agregar"
+      ? await agregarProducto(producto)
+      : await editarProducto(producto);
     onCerrar();
   };
 
   return (
-    <div aria-modal="true" role="dialog" className="w-full">
-      <div className="bg-white rounded-xl shadow-lg p-6">
+    <div className="w-full animate-fadeIn">
+      <div className="
+        bg-white rounded-2xl shadow-2xl p-8 
+        border border-neutral-200 
+        max-h-[90vh] overflow-y-auto
+      ">
 
-        {/* Header */}
-        <div className="flex justify-between items-center border-b pb-3">
-          <h3 className="text-lg font-semibold text-gray-800">
+        {/* HEADER */}
+        <div className="flex justify-between items-center pb-4 border-b">
+          <h3 className="text-2xl font-bold text-neutral-900">
             {modo === "agregar" ? "Agregar Producto" : "Editar Producto"}
           </h3>
 
           <button
-            type="button"
             onClick={onCerrar}
-            className="text-gray-500 hover:text-gray-700 transition"
+            className="p-2 rounded-lg hover:bg-neutral-100 transition"
           >
-            <X />
+            <X className="w-5 h-5 text-neutral-500" />
           </button>
         </div>
 
         {/* FORMULARIO */}
-        <form onSubmit={manejarSubmit} className="space-y-5 mt-4">
+        <form
+          onSubmit={manejarSubmit}
+          className="space-y-6 mt-6"
+        >
 
-          {/* Nombre */}
-          <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-700">Nombre</label>
+          {/* CAMPO */}
+          <div>
+            <label className="block text-sm font-medium text-neutral-700 mb-1">
+              Nombre del Producto
+            </label>
             <input
               type="text"
               name="nombre"
               value={producto.nombre || ""}
               onChange={manejarChange}
               required
-              className="border rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-yellow-600"
+              className="
+                w-full px-4 py-3 rounded-xl border border-neutral-300 
+                focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 
+                transition bg-neutral-50 hover:bg-neutral-100
+              "
+              placeholder="Ej: Café blend brasilero"
             />
           </div>
 
-          {/* Precio */}
-          <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-700">Precio</label>
+          {/* PRECIO */}
+          <div>
+            <label className="block text-sm font-medium text-neutral-700 mb-1">
+              Precio (ARS)
+            </label>
             <input
               type="number"
               name="precio"
               value={producto.precio || ""}
               onChange={manejarChange}
-              required
               min="0"
-              step="any"
-              className="border rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-yellow-600"
+              required
+              className="
+                w-full px-4 py-3 rounded-xl border border-neutral-300 
+                focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 
+                transition bg-neutral-50 hover:bg-neutral-100
+              "
+              placeholder="Ej: 17900"
             />
           </div>
 
-          {/* Imagen */}
-          <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-700">URL Imagen</label>
+          {/* IMAGEN */}
+          <div>
+            <label className="block text-sm font-medium text-neutral-700 mb-1">
+              URL de Imagen
+            </label>
             <input
               type="text"
               name="imagen"
               value={producto.imagen || ""}
               onChange={manejarChange}
-              className="border rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-yellow-600"
+              className="
+                w-full px-4 py-3 rounded-xl border border-neutral-300 
+                focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 
+                transition bg-neutral-50 hover:bg-neutral-100
+              "
+              placeholder="https://..."
             />
           </div>
 
-          {/* Descripción */}
-          <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-700">Descripción</label>
+          {/* DESCRIPCIÓN */}
+          <div>
+            <label className="block text-sm font-medium text-neutral-700 mb-1">
+              Descripción
+            </label>
             <textarea
               name="descripcion"
               rows="4"
               value={producto.descripcion || ""}
               onChange={manejarChange}
               required
-              className="border rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-yellow-600"
+              className="
+                w-full px-4 py-3 rounded-xl border border-neutral-300 
+                focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 
+                transition bg-neutral-50 hover:bg-neutral-100
+              "
+              placeholder="Descripción breve y clara del producto..."
             ></textarea>
           </div>
 
-          {/* 🔥 NUEVO CAMPO: Tipo de Producto */}
-          <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-700">Tipo</label>
+          {/* TIPO */}
+          <div>
+            <label className="block text-sm font-medium text-neutral-700 mb-1">
+              Tipo de Producto
+            </label>
             <select
               name="tipo"
               value={producto.tipo || ""}
               onChange={manejarChange}
               required
-              className="border rounded-md px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-yellow-600"
+              className="
+                w-full px-4 py-3 rounded-xl border border-neutral-300 
+                focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 
+                bg-neutral-50 hover:bg-neutral-100 transition
+              "
             >
               <option value="">Seleccionar tipo...</option>
               <option value="granos">Granos</option>
@@ -115,26 +150,32 @@ const FormProducto = ({ productoInicial = {}, modo = "agregar", onCerrar }) => {
             </select>
           </div>
 
-          {/* Botones */}
-          <div className="flex justify-end gap-3 pt-4 border-t">
+          {/* BOTONES */}
+          <div className="flex justify-end gap-4 pt-6 border-t">
             <button
               type="button"
               onClick={onCerrar}
-              className="px-4 py-2 rounded-md text-sm bg-gray-200 hover:bg-gray-300 transition"
+              className="
+                px-5 py-2.5 text-sm rounded-xl 
+                bg-neutral-200 hover:bg-neutral-300 transition
+              "
             >
               Cancelar
             </button>
 
             <button
               type="submit"
-              className="px-4 py-2 rounded-md text-sm bg-yellow-600 text-black hover:bg-yellow-500 transition"
+              className="
+                px-6 py-2.5 text-sm rounded-xl font-semibold
+                bg-yellow-500 hover:bg-yellow-400 
+                text-black transition shadow-md
+              "
             >
               {modo === "agregar" ? "Agregar" : "Actualizar"}
             </button>
           </div>
 
         </form>
-
       </div>
     </div>
   );

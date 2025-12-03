@@ -2,7 +2,7 @@ import GestionProductos from "./GestionProducto";
 
 const Admin = () => {
   return (
-    <div className="pt-20">
+    <div >
       <GestionProductos />
     </div>
   );

@@ -59,7 +59,7 @@ export default function SliderCafeteria() {
                 {/* Overlay cálido */}
                 <div className="flex flex-col justify-center items-center h-full bg-black/40 backdrop-blur-sm px-6 text-center">
 
-                    <h2 className="text-4xl md:text-6xl font-extrabold text-[#f2e6d8] drop-shadow-xl">
+                    <h2 className="text-4xl md:text-6xl font-extrabold text-white drop-shadow-xl">
                     {slide.titulo}
                     </h2>
 
