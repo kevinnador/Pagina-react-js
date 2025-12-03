@@ -7,19 +7,19 @@ const bannerPorCategoria = {
         titulo: "Café en Granos",
         descripcion: "Descubrí aromas intensos y sabores auténticos.",
         imagen:
-        "https://images.unsplash.com/photo-1511920170033-f8396924c348?q=80",
+        "https://i.pinimg.com/1200x/6d/c5/3f/6dc53fe5237d33aaf32342279fdb5170.jpg",
     },
     capsulas: {
         titulo: "Cápsulas",
         descripcion: "Café perfecto al instante, sin complicaciones.",
         imagen:
-        "https://images.unsplash.com/photo-1603386329225-868f9f94cb0e?q=80",
+        "https://i.pinimg.com/1200x/4a/0c/fc/4a0cfcb5882ce421c4404b96d5abc384.jpg",
     },
     accesorios: {
         titulo: "Accesorios",
         descripcion: "Todo lo que necesitás para elevar tu experiencia cafetera.",
         imagen:
-        "https://images.unsplash.com/photo-1541154242430-0f61f55a1c3c?q=80",
+        "https://i.pinimg.com/1200x/2b/5f/43/2b5f43b39083af8dffc4b6f0dcebc4c8.jpg",
     },
     };
 
