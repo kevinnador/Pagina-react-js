@@ -1,81 +1,81 @@
-import { memo } from "react";
+import { useState } from "react";
 
-const formatearPrecio = (valor) =>
-    new Intl.NumberFormat("es-AR", {
-        style: "currency",
-        currency: "ARS",
-        minimumFractionDigits: 0,
-    }).format(valor);
+const CarritoItem = ({ item, onEliminar, onCambiarCantidad }) => {
+    const [cantidad, setCantidad] = useState(item.cantidad || 1);
 
-    const CarritoItem = ({ item, onEliminar, onCambiarCantidad }) => {
-    const subtotal = item.precio * item.cantidad;
+    const handleCantidad = (nuevoValor) => {
+        if (nuevoValor < 1) return;
+        setCantidad(nuevoValor);
+        onCambiarCantidad(item.id, nuevoValor);
+    };
 
     return (
-        <li className="flex gap-6 border-b pb-6 last:border-none group transition-transform duration-200 ease-out hover:-translate-y-1 hover:shadow-md">
-        {/* IMAGEN */}
-        <div className="relative">
-            <img
+        <li
+        className="
+            flex flex-col sm:flex-row
+            items-center sm:items-start
+            gap-4 sm:gap-6
+            p-4 rounded-xl border border-neutral-200 bg-white shadow-sm
+        "
+        >
+        {/* Imagen grande en mobile */}
+        <img
             src={item.imagen}
             alt={item.nombre}
-            className="w-32 h-32 rounded-xl object-cover shadow-md"
-            />
-            <span className="absolute -top-2 -left-2 bg-black/80 text-[11px] text-white px-2 py-0.5 rounded-full">
-            x{item.cantidad}
-            </span>
-        </div>
+            className="
+            w-28 h-28 sm:w-24 sm:h-24
+            object-cover rounded-lg
+            border border-neutral-300
+            flex-shrink-0
+            "
+        />
 
-        {/* INFO */}
-        <div className="flex-1 flex flex-col justify-between">
-            <div>
-            <h2 className="text-lg font-semibold text-neutral-900">
-                {item.nombre}
-            </h2>
-            <p className="text-sm text-neutral-500 mt-1">
-                {formatearPrecio(item.precio)} c/u
+        {/* Info */}
+        <div className="flex flex-col flex-1 text-neutral-800 w-full">
+
+            <h3 className="text-lg sm:text-xl font-semibold leading-tight">
+            {item.nombre}
+            </h3>
+
+            <p className="text-yellow-600 font-bold text-lg mt-1">
+            ${item.precio}
             </p>
+
+            {/* ACCIONES */}
+            <div className="mt-3 flex items-center justify-between w-full">
+
+            {/* Cantidad */}
+            <div className="flex items-center gap-3 bg-neutral-100 rounded-full px-3 py-1">
+                <button
+                onClick={() => handleCantidad(cantidad - 1)}
+                className="w-8 h-8 flex items-center justify-center rounded-full bg-neutral-300 hover:bg-neutral-400 text-black"
+                >
+                -
+                </button>
+
+                <span className="text-lg font-medium w-6 text-center">
+                {cantidad}
+                </span>
+
+                <button
+                onClick={() => handleCantidad(cantidad + 1)}
+                className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-500 hover:bg-yellow-400 text-black font-bold"
+                >
+                +
+                </button>
             </div>
 
-            {/* CONTROLES DE CANTIDAD */}
-            <div className="flex items-center gap-3 mt-3">
+            {/* Eliminar */}
             <button
-                className="w-8 h-8 flex items-center justify-center rounded-full bg-neutral-200 hover:bg-neutral-300 text-neutral-700 transition"
-                onClick={() =>
-                onCambiarCantidad(item.id, Math.max(1, item.cantidad - 1))
-                }
+                onClick={() => onEliminar(item.id)}
+                className="text-red-500 hover:text-red-600 text-sm font-medium"
             >
-                -
+                Eliminar
             </button>
-
-            <span className="text-lg font-medium w-6 text-center">
-                {item.cantidad}
-            </span>
-
-            <button
-                className="w-8 h-8 flex items-center justify-center rounded-full bg-neutral-900 hover:bg-black text-white transition"
-                onClick={() => onCambiarCantidad(item.id, item.cantidad + 1)}
-            >
-                +
-            </button>
-
-            <span className="ml-4 text-sm text-neutral-600">
-                Subtotal:{" "}
-                <strong className="text-neutral-900">
-                {formatearPrecio(subtotal)}
-                </strong>
-            </span>
             </div>
         </div>
-
-        {/* ELIMINAR */}
-        <button
-            onClick={() => onEliminar(item.id)}
-            className="self-start text-red-500 hover:text-red-700 text-xl font-bold transition"
-            aria-label="Eliminar del carrito"
-        >
-            ×
-        </button>
         </li>
     );
 };
 
-export default memo(CarritoItem);
+export default CarritoItem;
